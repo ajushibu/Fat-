@@ -1,9 +1,7 @@
 import { TopBar } from '../components/layout/TopBar';
 import { GoalForm } from '../components/goals/GoalForm';
-import { GoalProgressBar } from '../components/goals/GoalProgressBar';
 import { ProjectionChart } from '../components/goals/ProjectionChart';
 import { MilestoneTimeline } from '../components/goals/MilestoneTimeline';
-import { EmptyState } from '../components/shared/EmptyState';
 import { useGoals, useAppStore } from '../store';
 import { useWeightAnalytics } from '../hooks/useWeightAnalytics';
 import { formatDate } from '../utils/dateUtils';
@@ -16,78 +14,55 @@ export function Goals() {
   const progress = getGoalProgress(latest?.weight ?? null);
 
   return (
-    <div>
-      <TopBar title="Goals" subtitle="Set your target weight and track milestones" />
+    <div className="min-h-full">
+      <TopBar title="Goals" />
 
-      <div className="p-6 space-y-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Goal form */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <h2 className="text-sm font-semibold text-gray-700 mb-4">Your Goals</h2>
-            <GoalForm />
-          </div>
+      <div className="px-4 md:px-6 py-4 space-y-4 max-w-2xl md:max-w-none mx-auto">
 
-          {/* Progress */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-5">
-            <h2 className="text-sm font-semibold text-gray-700">Progress</h2>
-
-            {goals.targetWeight && goals.startWeight && latest ? (
-              <>
-                <GoalProgressBar
-                  startWeight={goals.startWeight}
-                  currentWeight={latest.weight}
-                  targetWeight={goals.targetWeight}
-                />
-
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="bg-gray-50 rounded-lg p-3">
-                    <p className="text-xs text-gray-500">Progress</p>
-                    <p className="text-lg font-bold text-emerald-600">{progress.toFixed(1)}%</p>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-3">
-                    <p className="text-xs text-gray-500">Projected Goal Date</p>
-                    <p className="text-sm font-semibold text-gray-700">
-                      {projectedGoalDate ? formatDate(projectedGoalDate) : 'Not enough data'}
-                    </p>
-                  </div>
-                  {goals.startDate && (
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <p className="text-xs text-gray-500">Started</p>
-                      <p className="text-sm font-semibold text-gray-700">{formatDate(goals.startDate)}</p>
-                    </div>
-                  )}
-                  {goals.targetDate && (
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <p className="text-xs text-gray-500">Target Date</p>
-                      <p className="text-sm font-semibold text-gray-700">{formatDate(goals.targetDate)}</p>
-                    </div>
-                  )}
-                </div>
-              </>
-            ) : (
-              <EmptyState
-                icon="🎯"
-                title="No goal set"
-                description="Set a target weight to track your progress."
+        {/* Progress banner */}
+        {goals.targetWeight && goals.startWeight && latest && (
+          <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-5 text-white shadow-md">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <p className="text-xs font-medium text-emerald-100">Goal Weight</p>
+                <p className="text-3xl font-bold">{goals.targetWeight} <span className="text-base font-normal text-emerald-200">lbs</span></p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs font-medium text-emerald-100">Progress</p>
+                <p className="text-3xl font-bold">{progress.toFixed(0)}<span className="text-base font-normal text-emerald-200">%</span></p>
+              </div>
+            </div>
+            <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-white rounded-full transition-all duration-700"
+                style={{ width: `${progress}%` }}
               />
-            )}
+            </div>
+            <div className="mt-3 flex justify-between text-xs text-emerald-200">
+              <span>Start: {goals.startWeight} lbs</span>
+              {projectedGoalDate && <span>Est: {formatDate(projectedGoalDate, 'MMM d, yyyy')}</span>}
+            </div>
           </div>
+        )}
+
+        {/* Goal form */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+          <h2 className="text-sm font-semibold text-gray-800 mb-3">Set Goals</h2>
+          <GoalForm />
         </div>
 
         {/* Projection chart */}
-        {projectionData.length > 0 && goals.targetWeight && (
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <h2 className="text-sm font-semibold text-gray-700 mb-4">Projection</h2>
+        {projectionData.length > 1 && goals.targetWeight && (
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+            <h2 className="text-sm font-semibold text-gray-800 mb-1">Projection</h2>
+            <p className="text-xs text-gray-400 mb-3">Dashed line = projected at current rate</p>
             <ProjectionChart data={projectionData} targetWeight={goals.targetWeight} />
-            <p className="mt-2 text-xs text-gray-400">
-              Dashed line shows projected weight based on your current trend. Actual results vary.
-            </p>
           </div>
         )}
 
         {/* Milestones */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">Milestones</h2>
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+          <h2 className="text-sm font-semibold text-gray-800 mb-3">Milestones</h2>
           <MilestoneTimeline />
         </div>
       </div>

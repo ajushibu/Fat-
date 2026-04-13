@@ -1,18 +1,17 @@
-import { formatDate, todayStr } from '../../utils/dateUtils';
-
 interface TopBarProps {
   title: string;
   subtitle?: string;
+  action?: React.ReactNode;
 }
 
-export function TopBar({ title, subtitle }: TopBarProps) {
+export function TopBar({ title, subtitle, action }: TopBarProps) {
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-10 bg-white/90 backdrop-blur border-b border-gray-100 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
       <div>
-        <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
-        {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+        <h1 className="text-base md:text-lg font-semibold text-gray-900">{title}</h1>
+        {subtitle && <p className="text-xs text-gray-400 mt-0.5 hidden sm:block">{subtitle}</p>}
       </div>
-      <div className="text-sm text-gray-500">{formatDate(todayStr(), 'EEEE, MMMM d, yyyy')}</div>
+      {action && <div>{action}</div>}
     </header>
   );
 }
