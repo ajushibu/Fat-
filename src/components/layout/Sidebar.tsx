@@ -1,5 +1,6 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useMatch, useResolvedPath } from 'react-router-dom';
 import { LayoutDashboard, Scale, UtensilsCrossed, Target, BarChart3, Flame } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useAppStore } from '../../store';
 
 const NAV = [
@@ -9,6 +10,26 @@ const NAV = [
   { to: '/goals', icon: Target, label: 'Goals' },
   { to: '/analytics', icon: BarChart3, label: 'Analytics' },
 ];
+
+function SideNavItem({ to, icon: Icon, label, end }: { to: string; icon: LucideIcon; label: string; end?: boolean }) {
+  const resolved = useResolvedPath(to);
+  const isActive = !!useMatch({ path: resolved.pathname, end: end ?? false });
+
+  return (
+    <NavLink
+      to={to}
+      end={end}
+      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+        isActive
+          ? 'bg-emerald-50 text-emerald-700'
+          : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+      }`}
+    >
+      <Icon size={16} strokeWidth={isActive ? 2.2 : 1.8} />
+      {label}
+    </NavLink>
+  );
+}
 
 export function Sidebar() {
   const streaks = useAppStore((s) => s.streaks);
@@ -35,26 +56,8 @@ export function Sidebar() {
 
       {/* Nav links */}
       <nav className="flex-1 px-3 py-4 space-y-0.5">
-        {NAV.map(({ to, icon: Icon, label }) => (
-          <NavLink
-            key={to}
-            to={to}
-            end={to === '/'}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                isActive
-                  ? 'bg-emerald-50 text-emerald-700'
-                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
-              }`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                <Icon size={16} strokeWidth={isActive ? 2.2 : 1.8} />
-                {label}
-              </>
-            )}
-          </NavLink>
+        {NAV.map(({ to, icon, label }) => (
+          <SideNavItem key={to} to={to} icon={icon} label={label} end={to === '/'} />
         ))}
       </nav>
 
