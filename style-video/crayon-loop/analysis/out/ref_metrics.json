@@ -1,0 +1,178 @@
+{
+ "format": {
+  "w": 1000,
+  "h": 1000,
+  "aspect": 1.0,
+  "fps": 14.2857,
+  "frames": 13,
+  "seconds": 0.91
+ },
+ "frame_diff_mean": [
+  11.736,
+  11.271,
+  10.553,
+  10.879,
+  11.286,
+  10.931,
+  10.05,
+  11.707,
+  11.481,
+  13.501,
+  12.081,
+  11.588
+ ],
+ "frame_changed_frac": [
+  0.0668,
+  0.0632,
+  0.0594,
+  0.0608,
+  0.0633,
+  0.0626,
+  0.0581,
+  0.0654,
+  0.0663,
+  0.0747,
+  0.0687,
+  0.0674
+ ],
+ "held_frames": 0,
+ "cuts": 0,
+ "hold_run_lengths": {
+  "1": 13
+ },
+ "drawing_shift_px_median": 2.01,
+ "drawing_shift_px_max": 12.25,
+ "ink_bbox_mean": [
+  168,
+  154,
+  883,
+  867
+ ],
+ "ink_bbox_std_px": [
+  7.5,
+  6.6,
+  11.4,
+  15.4
+ ],
+ "ink_bbox_frac_of_frame": 0.511,
+ "ink_bbox_center_frac": [
+  0.526,
+  0.511
+ ],
+ "boil_px_median": 2.0,
+ "boil_px_p90": 9.79,
+ "boil_changes_every_n_frames": 1,
+ "line_width_px_median": 6.0,
+ "line_width_px_p10_p90": [
+  4.0,
+  10.4
+ ],
+ "ink_coverage_frac": 0.1648,
+ "ink_coverage_std": 0.0039,
+ "solid_fill_frac_of_ink": 0.431,
+ "white_holes_in_solid_ink_frac": 0.0,
+ "solid_ink_luma_std": 8.3,
+ "isolated_specks_per_frame": 69.6,
+ "paper_grain_highpass_std": 0.248,
+ "edge_raggedness_ratio": 1.958,
+ "luma_p2_p98": [
+  1.0,
+  254.0
+ ],
+ "luma_mean": 213.82,
+ "luma_std_contrast": 89.12,
+ "saturation_mean": 0.0,
+ "saturation_p99": 0.0,
+ "paper_luma_per_frame_mean": 254.0,
+ "paper_flicker_std": 0.005,
+ "ink_rgb_mean": [
+  10,
+  10,
+  10
+ ],
+ "paper_rgb_mean": [
+  253,
+  253,
+  253
+ ],
+ "vignette_corner_minus_centre_luma": 0.3,
+ "midtone_frac": 0.00826,
+ "tinted_midtone_px_per_frame": 0,
+ "tinted_midtone_rgb_mean": null,
+ "palette12": [
+  {
+   "hex": "#fdfdfd",
+   "share": 0.8233
+  },
+  {
+   "hex": "#030303",
+   "share": 0.0797
+  },
+  {
+   "hex": "#0c0c0c",
+   "share": 0.0603
+  },
+  {
+   "hex": "#1b1b1b",
+   "share": 0.0089
+  },
+  {
+   "hex": "#2e2e2e",
+   "share": 0.0054
+  },
+  {
+   "hex": "#424242",
+   "share": 0.0039
+  },
+  {
+   "hex": "#e3e3e3",
+   "share": 0.0034
+  },
+  {
+   "hex": "#575757",
+   "share": 0.0033
+  },
+  {
+   "hex": "#707070",
+   "share": 0.0031
+  },
+  {
+   "hex": "#c6c6c6",
+   "share": 0.0029
+  },
+  {
+   "hex": "#a8a8a8",
+   "share": 0.0029
+  },
+  {
+   "hex": "#8b8b8b",
+   "share": 0.0029
+  }
+ ],
+ "motion_grid_4x4_changed_frac": [
+  [
+   0.003,
+   0.102,
+   0.001,
+   0.0
+  ],
+  [
+   0.029,
+   0.21,
+   0.097,
+   0.0
+  ],
+  [
+   0.04,
+   0.2,
+   0.101,
+   0.057
+  ],
+  [
+   0.001,
+   0.15,
+   0.044,
+   0.0
+  ]
+ ]
+}

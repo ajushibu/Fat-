@@ -1,0 +1,6 @@
+# reference video and anything derived from its pixels stay local (not ours to redistribute)
+ref/
+analysis/out/strip_*.png
+analysis/out/sheet_all.png
+video/node_modules
+video/out/
