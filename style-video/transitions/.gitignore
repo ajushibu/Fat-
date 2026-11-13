@@ -1,0 +1,3 @@
+# the reference video and frames/strips cut from it stay local
+ref/
+analysis/out/*.png

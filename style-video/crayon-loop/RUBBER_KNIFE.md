@@ -55,3 +55,33 @@ npx remotion render src/index.ts RubberKnife out/knife --sequence --image-format
 ffmpeg -framerate 100/7 -i out/knife/element-%03d.png -c:v libx264 -crf 12 -pix_fmt yuv420p -an ../rubber-knife.mp4
 node preview.cjs Film /tmp/knife 10 60 120    # quick stills
 ```
+
+
+---
+
+# Version 2: one continuous take (`rubber-knife-one-take.mp4`)
+
+Same idea, rebuilt on the transition framework (`../transitions/FRAMEWORK.md`) so the film has **no cuts**.
+1000 x 1000, 100/7 fps, 128 frames, 8.96 s, silent, no text. Source: `video/src/knife/Film2.tsx`. Composition id `RubberKnifeOneTake`.
+
+| Part | Frames | What happens | Device |
+|---|---|---|---|
+| A | 0-15 | Wide, black on white: he stands over her, knife raised. | - |
+| T1 | 16-31 | The camera pushes into her eye (about x46). Her pupil dilates until black fills the frame. The glint in it is a blade. | seed and travel; swallow and reopen with reversed polarity; level of detail |
+| B | 32-62 | Inside her eye, white crayon on black: his fist and the blade. A giant white finger comes down (8 frames), touches the blade, and it goes limp. | nested world; polarity per layer |
+| T3 | 63-74 | Pull back out: the limp blade shrinks to a glint, the pupil contracts, the wide shot returns. The real knife is rigid. | travel in reverse |
+| C | 75-127 | The giant finger comes down and stops short of the blade. The camera slowly pulls back and the two people get small under the hand. | scale as emotion |
+
+What changed in meaning: in version 1 the "what if" was a lighter-drawn shot. Here it is literally inside her eye, so the rescue reads as her hope.
+
+Measured:
+- 0 held frames; every frame is a new drawing.
+- No cuts. The frame-difference detector flags frames 18-19, 31-32, 64-65 and 73-74, which are the fastest frames of the two camera travels, not cuts.
+- Black share goes 0.10 -> 0.88 -> 0.10 across the film (the polarity flip and back).
+- The push peaks at x1.82 per frame. The reference's travels stay within about x1.15 per frame at 25 fps. Per second the two are similar
+  (the push averages about x31 per second here; the reference peaks at about x33 per second), but at 14.29 fps and under 10 s the push is more abrupt frame to frame.
+
+Not as good as the reference:
+- Two transitions, against the reference's ten. Under 10 s there is no room for more without the scenes becoming unreadable.
+- The reference re-poses things in perspective as it travels. This camera is flat: pan, zoom and rotate.
+- The face that appears during the push is a second drawing swapped in, and it does not match the small one exactly (her hand and hair jump).

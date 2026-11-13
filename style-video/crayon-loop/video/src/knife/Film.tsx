@@ -30,7 +30,7 @@ export const FILM_LEN = SHOTS.reduce((a, s) => a + s.len, 0);
 // ---------------- shared pieces ----------------
 
 // blade: back edge straight (or bent like rubber), cutting edge curving into the tip
-const blade = (k: Kit, T: Xf, base: P, dirDeg: number, len: number, hw: number, bend: (u: number) => number, glint = false) => {
+export const blade = (k: Kit, T: Xf, base: P, dirDeg: number, len: number, hw: number, bend: (u: number) => number, glint = false) => {
   const N = 18;
   const back: P[] = [], edge: P[] = [], bevel: P[] = [];
   let x = base[0], y = base[1];
@@ -62,7 +62,7 @@ const blade = (k: Kit, T: Xf, base: P, dirDeg: number, len: number, hw: number, 
 };
 
 // rubber: droop amount (deg added at the tip) for frames after the touch
-const rubberBend = (t: number, touch: number) => {
+export const rubberBend = (t: number, touch: number) => {
   if (t < touch) return 0;
   const droop = act(t, touch, 6, 77);
   const u = t - touch - 3;
@@ -71,7 +71,15 @@ const rubberBend = (t: number, touch: number) => {
 };
 
 // the giant hand, palm down, index finger pointing to local -x; fingertip at the local origin
-const godHand = (k: Kit, T: Xf) => {
+export const godHand = (k: Kit, T: Xf, far = false) => {
+  if (far) {
+    // the arm and sleeve carry on, for shots that pull back far enough to see more of it
+    k.paper(T, [[880, -310], [1700, -520], [1800, -40], [960, 80]]);
+    k.stroke(T, [[940, -246], [1300, -330], [1700, -440]], OUTLINE_W * 0.8, {p: 0.55, over: 10});
+    k.stroke(T, [[980, -28], [1350, -90], [1750, -170]], OUTLINE_W * 0.8, {p: 0.55, over: 10});
+    k.stroke(T, [[720, -250], [1100, -400], [1650, -560]], OUTLINE_W, {over: 10});
+    k.stroke(T, [[760, 40], [1150, 20], [1750, -60]], OUTLINE_W, {over: 10});
+  }
   k.paper(T, [[0, 0], [8, -18], [30, -27], [110, -29], [205, -33], [300, -64], [420, -112], [560, -172], [720, -250], [900, -300], [1000, 60], [700, 120], [480, 96], [330, 116], [296, 128], [262, 122], [236, 108], [214, 100], [194, 84], [172, 68], [160, 44], [140, 30], [110, 25], [30, 23], [8, 14]]);
   k.stroke(T, [[30, -27], [110, -29], [205, -33]], OUTLINE_W, {over: 6, restate: 0.3});
   k.stroke(T, [[32, -27], [6, -17], [1, 4], [26, 23]], OUTLINE_W, {over: 2, j: 1.4});
@@ -94,10 +102,10 @@ const godHand = (k: Kit, T: Xf) => {
 
 // ---------------- the wide shot (S1, S4, S6) ----------------
 
-type WideOpt = {hand?: {p: number; gap: number; lift?: number}; bend?: number; look?: number; puzzled?: boolean};
-const WIDE_FRAME: Xf = (p) => xf(p, 34, 6, 0, 500, 842, 0.86);
+export type WideOpt = {hand?: {p: number; gap: number; lift?: number; far?: boolean}; bend?: number; look?: number; puzzled?: boolean; noHerHead?: boolean};
+export const WIDE_FRAME: Xf = (p) => xf(p, 34, 6, 0, 500, 842, 0.86);
 
-const wide = (k: Kit, F: number, o: WideOpt) => {
+export const wide = (k: Kit, F: number, o: WideOpt) => {
   const tr = rng(F, 900);
   // floor
   k.stroke(k.part(1, [500, 842], undefined, 0.15), [[64, 842], [300, 838], [560, 843], [800, 839], [948, 842]], HEAVY_W, {p: 0.9, over: 30, j: 1.6});
@@ -153,15 +161,17 @@ const wide = (k: Kit, F: number, o: WideOpt) => {
   k.stroke(VB, [[730, 838], [796, 722], [780, 692]], OUTLINE_W, {over: 6});
   k.stroke(VB, [[664, 812], [712, 820], [742, 812]], 3.6, {p: 0.6, over: 4}); // waist
   // head: small upturned nose, wide eye, hair falling behind
-  const VH = k.part(21, [784, 630], (p) => xf(p, 0, 0, 0, 772, 668, 1.35), 0.8, 0.5);
-  k.scribble(VH, [[786, 590], [818, 600], [830, 632], [824, 668], [814, 700]], 26, 20, HAIR_W * 0.8, 0.1);
-  k.paper(VH, [[790, 592], [770, 594], [752, 606], [744, 620], [734, 630], [748, 636], [748, 648], [756, 660], [780, 670], [806, 652], [812, 620], [806, 598]]);
-  k.stroke(VH, [[792, 590], [770, 593], [752, 606], [746, 618], [734, 630], [748, 635]], OUTLINE_W, {over: 4});
-  k.stroke(VH, [[750, 652], [758, 664], [784, 670]], OUTLINE_W, {over: 5});
-  k.stroke(VH, [[750, 640], [756, 643], [754, 650], [748, 648], [750, 640]], 3.2, {p: 0.8, over: 1, j: 0.8}); // open mouth
-  k.stroke(VH, [[758, 608], [766, 604], [772, 610], [768, 618], [760, 618], [757, 610]], 3.2, {p: 0.85, over: 1, j: 0.7}); // wide eye
-  k.dot(VH, [762, 610], 2.8);
-  k.stroke(VH, [[750, 598], [762, 593], [774, 596]], 3.8, {p: 0.8, over: 2, j: 1.2}); // worried brow
+  if (!o.noHerHead) {
+    const VH = k.part(21, [784, 630], (p) => xf(p, 0, 0, 0, 772, 668, 1.35), 0.8, 0.5);
+    k.scribble(VH, [[786, 590], [818, 600], [830, 632], [824, 668], [814, 700]], 26, 20, HAIR_W * 0.8, 0.1);
+    k.paper(VH, [[790, 592], [770, 594], [752, 606], [744, 620], [734, 630], [748, 636], [748, 648], [756, 660], [780, 670], [806, 652], [812, 620], [806, 598]]);
+    k.stroke(VH, [[792, 590], [770, 593], [752, 606], [746, 618], [734, 630], [748, 635]], OUTLINE_W, {over: 4});
+    k.stroke(VH, [[750, 652], [758, 664], [784, 670]], OUTLINE_W, {over: 5});
+    k.stroke(VH, [[750, 640], [756, 643], [754, 650], [748, 648], [750, 640]], 3.2, {p: 0.8, over: 1, j: 0.8}); // open mouth
+    k.stroke(VH, [[758, 608], [766, 604], [772, 610], [768, 618], [760, 618], [757, 610]], 3.2, {p: 0.85, over: 1, j: 0.7}); // wide eye
+    k.dot(VH, [762, 610], 2.8);
+    k.stroke(VH, [[750, 598], [762, 593], [774, 596]], 3.8, {p: 0.8, over: 2, j: 1.2}); // worried brow
+  }
   k.stroke(VB, [[772, 666], [770, 690]], OUTLINE_W, {over: 3});
   // raised hand, palm out, shaking
   const VA = k.part(22, [690, 640], (p) => xf(p, tr(-3.5, 3.5), tr(-3.5, 3.5)), 0.7);
@@ -182,13 +192,13 @@ const wide = (k: Kit, F: number, o: WideOpt) => {
     const away = o.hand.gap + (1 - o.hand.p) * 620 + (o.hand.lift ?? 0);
     const tip: P = [touch[0] + dir[0] * away, touch[1] + dir[1] * away];
     const HAND = k.part(30, tip, (p) => xf(p, tip[0], tip[1], ang, 0, 0, s), 0.6, 0.3);
-    godHand(k, HAND);
+    godHand(k, HAND, o.hand.far);
   }
 };
 
 // ---------------- close-ups ----------------
 
-const herFace = (k: Kit, F: number) => {
+export const herFace = (k: Kit, F: number, o: {noHand?: boolean; noPupil?: boolean} = {}) => {
   const tr = rng(F, 910);
   const HD = k.part(40, [560, 480], (p) => xf(p, tr(-1.5, 1.5), tr(-1.5, 1.5)), 1, 0.4);
   // blouse collar and shoulders
@@ -205,8 +215,9 @@ const herFace = (k: Kit, F: number) => {
   k.stroke(HD, [[418, 562], [430, 602], [472, 652], [540, 682], [622, 664]], OUTLINE_W, {over: 8});
   k.stroke(HD, [[410, 526], [428, 520], [438, 536], [428, 552], [412, 548], [406, 532]], 4.4, {p: 0.85, over: 1, j: 1.2}); // open mouth
   k.stroke(HD, [[452, 418], [466, 404], [484, 410], [488, 428], [474, 440], [456, 434], [452, 418]], 4.2, {p: 0.85, over: 1, j: 1}); // wide eye
-  k.dot(HD, [465, 416], 6.5);
+  if (!o.noPupil) k.dot(HD, [465, 416], 6.5);
   k.stroke(HD, [[438, 380], [462, 368], [496, 376]], 5.4, {p: 0.85, over: 3, j: 1.5}); // brow up in the middle
+  if (o.noHand) return;
   // her raised hand in front, shaking
   const HA = k.part(42, [240, 600], (p) => xf(p, tr(-4.5, 4.5), tr(-4.5, 4.5)), 1);
   k.paper(HA, [[200, 1010], [190, 760], [170, 660], [140, 560], [126, 470], [160, 470], [196, 560], [210, 420], [244, 416], [250, 548], [262, 400], [296, 404], [292, 552], [318, 440], [350, 450], [326, 590], [376, 560], [400, 586], [330, 700], [330, 1010]]);

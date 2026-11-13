@@ -161,6 +161,12 @@ export const CrayonDefs: React.FC<{seed: number}> = ({seed}) => {
       {mk(`fleck-${seed}`, PAPER, {blur: 1.1, halo: 0.3, grain: 3.4, gain: 1.0, slope: 1.5, fine: 0.5, coarseAmt: 0.7})}
       {mk(`paper-${seed}`, PAPER, {blur: 0.8, halo: 0, grain: 1.0, gain: 1.15, slope: 4, fine: 0.5, coarseAmt: 0.2})}
       {mk(`grey-${seed}`, '#c2c2c2', {blur: 2.4, halo: 0.3, grain: 3.0, gain: 1.15, slope: 1.6, fine: 0.5, coarseAmt: 0.6})}
+      {/* inverse polarity (white crayon on black paper): same brushes, colours swapped. Suffix "w". */}
+      {mk(`inkw-${seed}`, PAPER, {blur: 0.85, halo: 0.6, grain: 2.9, gain: 1.38, slope: 1.8, fine: 0.5, coarseAmt: 0.6})}
+      {mk(`fillw-${seed}`, PAPER, {blur: 1.0, halo: 0.55, grain: 2.3, gain: 2.5, slope: 1.8, fine: 0.5, coarseAmt: 0.5})}
+      {mk(`fleckw-${seed}`, '#070707', {blur: 1.1, halo: 0.3, grain: 3.4, gain: 1.0, slope: 1.5, fine: 0.5, coarseAmt: 0.7})}
+      {mk(`paperw-${seed}`, '#070707', {blur: 0.8, halo: 0, grain: 1.0, gain: 1.15, slope: 4, fine: 0.5, coarseAmt: 0.2})}
+      {mk(`greyw-${seed}`, '#4a4a4a', {blur: 2.4, halo: 0.3, grain: 3.0, gain: 1.15, slope: 1.6, fine: 0.5, coarseAmt: 0.6})}
     </defs>
   );
 };
