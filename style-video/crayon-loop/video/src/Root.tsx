@@ -4,6 +4,7 @@ import {Scene} from './Scene';
 import {Film, FILM_FPS, FILM_LEN} from './knife/Film';
 import {Film2, FILM2_FPS, FILM2_LEN} from './knife/Film2';
 import {Constantine, CON_FPS, CON_LEN} from './doodle/constantine/Film';
+import {ConstantineE, CONE_FPS, CONE_LEN} from './doodle/constantine/FilmE';
 
 // Measured from the reference: 1000x1000, 70 ms per frame = 100/7 fps.
 export const FPS = 100 / 7;
@@ -11,6 +12,7 @@ const RubberKnife: React.FC = () => <Film frame={useCurrentFrame()} />;
 const RubberKnifeOneTake: React.FC = () => <Film2 frame={useCurrentFrame()} />;
 const con = (v: number): React.FC => () => <Constantine frame={useCurrentFrame()} v={v} />;
 const CONS = [0, 1, 2, 3, 4].map(con);
+const ConE: React.FC = () => <ConstantineE frame={useCurrentFrame()} />;
 export const RemotionRoot: React.FC = () => (
   <>
     <Composition id="TeaBreak" component={Scene} durationInFrames={72} fps={FPS} width={1000} height={1000} />
@@ -19,5 +21,6 @@ export const RemotionRoot: React.FC = () => (
     {CONS.map((C, i) => (
       <Composition key={i} id={`Constantine${i + 1}`} component={C} durationInFrames={CON_LEN} fps={CON_FPS} width={1000} height={1000} />
     ))}
+    <Composition id="Constantine5Plus" component={ConE} durationInFrames={CONE_LEN} fps={CONE_FPS} width={1000} height={1000} />
   </>
 );

@@ -20,8 +20,8 @@ export const CON_FPS = 100 / 7;
 const N_LEN = 58, D_LEN = 30, M_LEN = 16, B_LEN = 22, E_LEN = 22;
 export const CON_LEN = N_LEN + D_LEN + M_LEN + B_LEN + E_LEN; // 148 frames = 10.4 s
 
-type CrossKind = 'rays' | 'sun' | 'night' | 'star' | 'beams';
-type Design = {
+export type CrossKind = 'rays' | 'sun' | 'night' | 'star' | 'beams';
+export type Design = {
   name: string; conId: number; con: Look; conDay?: Look; crown: Crown;
   sol: Look; shield: ShieldShape; foe: Look; foeShield: ShieldShape; foeMark: 'stripe' | 'dot' | 'none';
   cross: CrossKind; bed: 'cot' | 'tent' | 'roll';
@@ -40,10 +40,10 @@ export const DESIGNS: Design[] = [
 ];
 
 // ---------- camera ----------
-type Cam = {c: P; z: number};
-const mix = (a: Cam, b: Cam, t: number): Cam => ({c: [a.c[0] + (b.c[0] - a.c[0]) * t, a.c[1] + (b.c[1] - a.c[1]) * t], z: a.z * Math.pow(b.z / a.z, t)});
+export type Cam = {c: P; z: number};
+export const mix = (a: Cam, b: Cam, t: number): Cam => ({c: [a.c[0] + (b.c[0] - a.c[0]) * t, a.c[1] + (b.c[1] - a.c[1]) * t], z: a.z * Math.pow(b.z / a.z, t)});
 // The pen gets a little finer when figures are small on screen and bolder in close-ups, but much less than the zoom.
-const view = (k: Pen, cam: Cam, figSc = 2.1, rot?: {deg: number; about: P}) => {
+export const view = (k: Pen, cam: Cam, figSc = 2.1, rot?: {deg: number; about: P}) => {
   const ps = Math.max(1.15, Math.min(2.9, 2.1 * Math.pow((cam.z * figSc) / 2.1, 0.7)));
   k.setView(([x, y]) => {
     if (rot) {
@@ -56,20 +56,20 @@ const view = (k: Pen, cam: Cam, figSc = 2.1, rot?: {deg: number; about: P}) => {
 };
 
 // ---------- poses (facing right; mirror() for facing left) ----------
-const STAND = {hip: [0, 150] as P, neck: [8, 242] as P, head: [22, 294] as P, kneeN: [14, 80] as P, footN: [10, 6] as P, kneeF: [-14, 80] as P, footF: [-26, 6] as P};
-const SOL_HOLD: Joints = {...STAND, elbowN: [30, 200], handN: [70, 196], elbowF: [-24, 204], handF: [-36, 186]};
-const PUSH: Joints = {hip: [0, 140], neck: [40, 224], head: [70, 270], tilt: 10, kneeN: [50, 80], footN: [48, 6], kneeF: [-44, 72], footF: [-90, 6], elbowN: [72, 200], handN: [112, 208], elbowF: [4, 214], handF: [-10, 250]};
-const RECOIL: Joints = {hip: [0, 128], neck: [-24, 212], head: [-26, 266], tilt: -12, kneeN: [28, 74], footN: [34, 6], kneeF: [-28, 68], footF: [-46, 6], elbowN: [8, 186], handN: [44, 160], elbowF: [-6, 244], handF: [22, 300]};
-const walk = (ph: number): Joints => {
+export const STAND = {hip: [0, 150] as P, neck: [8, 242] as P, head: [22, 294] as P, kneeN: [14, 80] as P, footN: [10, 6] as P, kneeF: [-14, 80] as P, footF: [-26, 6] as P};
+export const SOL_HOLD: Joints = {...STAND, elbowN: [30, 200], handN: [70, 196], elbowF: [-24, 204], handF: [-36, 186]};
+export const PUSH: Joints = {hip: [0, 140], neck: [40, 224], head: [70, 270], tilt: 10, kneeN: [50, 80], footN: [48, 6], kneeF: [-44, 72], footF: [-90, 6], elbowN: [72, 200], handN: [112, 208], elbowF: [4, 214], handF: [-10, 250]};
+export const RECOIL: Joints = {hip: [0, 128], neck: [-24, 212], head: [-26, 266], tilt: -12, kneeN: [28, 74], footN: [34, 6], kneeF: [-28, 68], footF: [-46, 6], elbowN: [8, 186], handN: [44, 160], elbowF: [-6, 244], handF: [22, 300]};
+export const walk = (ph: number): Joints => {
   const fN: P = [46 * Math.sin(ph), 6 + 16 * Math.max(0, Math.cos(ph))], fF: P = [46 * Math.sin(ph + Math.PI), 6 + 16 * Math.max(0, Math.cos(ph + Math.PI))];
   return {hip: [0, 150 + 3 * Math.cos(2 * ph)], neck: [10, 242], head: [26, 294], kneeN: [fN[0] * 0.5 + 12, 82], footN: fN, kneeF: [fF[0] * 0.5 + 12, 82], footF: fF, elbowN: [30, 200], handN: [62, 196], elbowF: [-22, 204], handF: [-34, 186]};
 };
 
 // ---------- props ----------
-const ell = (c: P, rx: number, ry: number, n = 14): P[] => Array.from({length: n}, (_, i) => [c[0] + Math.cos((i / n) * 6.283) * rx, c[1] + Math.sin((i / n) * 6.283) * ry] as P);
+export const ell = (c: P, rx: number, ry: number, n = 14): P[] => Array.from({length: n}, (_, i) => [c[0] + Math.cos((i / n) * 6.283) * rx, c[1] + Math.sin((i / n) * 6.283) * ry] as P);
 
 // The cross of light. c = centre, u = unit (world px), p = how far it has appeared (0..1). Five designs.
-const cross = (k: Pen, c: P, u: number, p: number, F: number, kind: CrossKind) => {
+export const cross = (k: Pen, c: P, u: number, p: number, F: number, kind: CrossKind) => {
   if (p <= 0) return;
   const g = 0.3 + 0.7 * p, a = 0.17;
   const r = rng(F, 800);

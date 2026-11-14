@@ -13,6 +13,17 @@ Five variations: the shot plan is the same in all five; the character and prop d
 | `constantine-4.mp4` (D) | tall and thin, cape, helmet by day | diadem | brush helmets, six-sided shields | dome helmets, kite shields | four-pointed star cross | cot |
 | `constantine-5.mp4` (E) | short, stocky, bearded, big head | headband with ribbons | caps, kite shields | plumed helmets, rectangular shields | hollow cross with glow rings | tent |
 
+`constantine-5-plus.mp4`: design E pushed further, same shot plan and length. Added in each shot:
+- **Night:** open tent with a pennant, a helmet on a post, a crate with a jug and cup, sandals under the bed, snore loops,
+  a fire, and a guard dozing on a log who jolts awake when the cross appears. Wider framing so all of it fits.
+- **Day:** a paint pot; four soldiers who each look and act differently (holds still for the brush, leans on his spear,
+  scratches his head, cheers when his shield gets the sign); tent and crates behind.
+- **March:** a drummer, a standard-bearer with the Chi Rho banner, dust at their feet, birds.
+- **Bridge:** wider spacing, the Chi Rho standard behind the men, an enemy standard that drops, planks flying off the broken end.
+- **Emperor:** two soldiers cheer either side of the pedestal, a trumpeter, birds.
+
+Source: `../crayon-loop/video/src/doodle/constantine/FilmE.tsx` (composition `Constantine5Plus`).
+
 Shot plan (frames):
 
 | Frames | Shot |
